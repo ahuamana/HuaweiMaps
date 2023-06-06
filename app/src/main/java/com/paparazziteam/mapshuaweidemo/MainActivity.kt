@@ -28,7 +28,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             .initialize(this)*/
     }
 
-    override fun onMapReady(p0: HuaweiMap?) {
+    override fun onMapReady(huaweiMap: HuaweiMap?) {
 
+        val limaLatLng = com.huawei.hms.maps.model.LatLng(-12.007831, -77.060545)
+        //go to lima
+        huaweiMap?.moveCamera(
+            com.huawei.hms.maps.CameraUpdateFactory.newLatLngZoom(
+                limaLatLng,
+                15f
+            )
+        )
     }
 }
