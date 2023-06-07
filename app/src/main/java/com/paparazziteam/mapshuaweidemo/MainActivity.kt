@@ -2,33 +2,20 @@ package com.paparazziteam.mapshuaweidemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.huawei.agconnect.AGCRoutePolicy
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapView
 import com.huawei.hms.maps.MapsInitializer
 import com.huawei.hms.maps.OnMapReadyCallback
+import com.huawei.hms.maps.SupportMapFragment
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class MainActivity : AppCompatActivity() {
 
-        MapsInitializer
-            .setApiKey("DAEDALN7DDYzJ6sPsdsHcuzwPFzXOW6hfN7yDW1FlUOksJH4ZMzvhs68QT/2WwLY0ejvJBPJsiTKLpEk5x/zkoF0rCxSsIOS9y7WdA==")
+    private var huaweiMap: HuaweiMap? = null
 
-
-        val mMapView: MapView = findViewById(R.id.mapview_mapviewdemo)
-        var mapViewBundle: Bundle? = null
-        if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle("MapViewBundleKey")
-        }
-        mMapView.onCreate(mapViewBundle)
-        mMapView.getMapAsync(this)
-
-        /*MapsInitializer
-            .initialize(this)*/
-    }
-
-    override fun onMapReady(huaweiMap: HuaweiMap?) {
+    private val callbackMapHuawei = com.huawei.hms.maps.OnMapReadyCallback { huaweiMap ->
+        // Do something with the Map here
+        this.huaweiMap = huaweiMap
 
         val limaLatLng = com.huawei.hms.maps.model.LatLng(-12.007831, -77.060545)
         //go to lima
@@ -38,5 +25,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 15f
             )
         )
+
+    }
+
+    private val callback = OnMapReadyCallback { googleMap ->
+        // Do something with the Map here
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        var mSupportMapFragment: SupportMapFragment? = null
+        mSupportMapFragment = supportFragmentManager.findFragmentById(R.id.mapview_mapviewdemo) as SupportMapFragment?
+        mSupportMapFragment?.getMapAsync(callbackMapHuawei)
+
     }
 }
